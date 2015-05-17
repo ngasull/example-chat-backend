@@ -210,7 +210,6 @@ describe('ChatBackend', function () {
                 .end(function (err, res) {
                     should(err).be.null
                     message = res.body
-                    console.log('POST OK', message)
                 })
         })
     })

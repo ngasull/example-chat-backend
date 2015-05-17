@@ -34,7 +34,6 @@ ChatBackend.prototype.listen = function (port) {
     this.server = this.app.listen(port)
     this.io = socketio(this.server)
 
-    console.log('Registering SocketIO')
     this.io.on('connection', function (socket) {
         socket.join('chat')
     })
@@ -56,7 +55,6 @@ ChatBackend.prototype.close = function () {
  */
 ChatBackend.prototype.notifyMessage = function (message) {
 
-        console.log('Emitting message:', message)
     if (this.io) {
         this.io.to('chat').emit('message', message)
     }
