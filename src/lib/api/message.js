@@ -1,8 +1,12 @@
 /**
  * Instantiates the MessageApi
+ * @param {ChatBackend} the backend app
  * @constructor
  */
-function MessageApi() {
+function MessageApi(backend) {
+
+    this.backend = backend
+
     // Simple storage / cache
     this.messages = []
     this.index = {}
@@ -45,6 +49,8 @@ MessageApi.prototype.add = function (message) {
 
     this.index[this.sequence] = newMessage
     this.messages.push(newMessage)
+
+    if (this.backend) this.backend.notifyMessage(newMessage)
 
     return newMessage
 }

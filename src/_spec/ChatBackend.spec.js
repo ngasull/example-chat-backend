@@ -1,7 +1,8 @@
 var should = require('should')
 var request = require('supertest')
+var socketioClient = require('socket.io-client')
 
-var ChatBackend = require('../express')
+var ChatBackend = require('..')
 
 var backend = new ChatBackend()
 var app = backend.app
@@ -160,6 +161,56 @@ describe('ChatBackend', function () {
                     should(err).be.null
                     res.body.should.eql([updatedFirstMessage, thirdMessage])
                     done()
+                })
+        })
+    })
+
+    describe('Real time IO', function () {
+
+        var PORT = 8080
+        var socket
+
+        before(function () {
+            backend.listen(PORT)
+        })
+
+        beforeEach(function (done) {
+            socket = socketioClient('http://localhost:' + PORT)
+            socket.once('connect', done)
+        })
+
+        afterEach(function () {
+            socket.close()
+        })
+
+        after(function () {
+            backend.close()
+        })
+
+        it('should send a realtime event on new messages', function (done) {
+
+            var message
+
+            socket.on('message', function (data) {
+                should(message).not.be.undefined
+                data.should.eql(message)
+                done()
+            })
+
+            request(app)
+                .post('/api/message')
+                .set('Accept', 'application/json')
+                .send({
+                    author: 'blint',
+                    text: 'Hello API',
+                    dummyParam: 'foo'
+                })
+                .expect(200)
+                .expect('Content-Type', /json/)
+                .end(function (err, res) {
+                    should(err).be.null
+                    message = res.body
+                    console.log('POST OK', message)
                 })
         })
     })

@@ -20,3 +20,9 @@ gulp.task('test', function (cb) {
                 .on('end', cb)
         })
 })
+
+gulp.task('coveralls', function () {
+    if (!process.env.CI) return null
+    return gulp.src('./coverage/lcov.info')
+        .pipe(coveralls())
+})
