@@ -14,7 +14,7 @@ function ChatBackend() {
     this.app = express()
     this.messageApi = new MessageApi(this)
 
-    this.app.use(bodyParser())
+    this.app.use(bodyParser.json())
 }
 
 /**
