@@ -1,6 +1,6 @@
 {
   "name": "example-chat-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple backend exposing a chat API & real time messages",
   "main": "src/index.js",
   "scripts": {
