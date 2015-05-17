@@ -1,6 +1,7 @@
 var express = require('express')
 var socketio = require('socket.io')
 var bodyParser = require('body-parser')
+var morgan = require('morgan')
 var routeApi = require('./lib/routeApi')
 var MessageApi = require('./lib/api/message')
 
@@ -15,6 +16,7 @@ function ChatBackend() {
     this.messageApi = new MessageApi(this)
 
     this.app.use(bodyParser.json())
+    this.app.use(morgan('dev'))
 }
 
 /**
